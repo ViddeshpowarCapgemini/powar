@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container5
+    environment:
+      POSTGRES_DB: viddeshpowardb2
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: viddeshp
+    ports:
+      - "5432:5432"
+    networks:
+      - ola_network
+
+  springboot:
+    build: .
+    container_name: employee_app
+    ports:
+      - "8091:8091"
+    depends_on:
+      - postgres
+    networks:
+      - ola_network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://vpowar.cmdlxfdnrfju.ap-south-1.rds.amazonaws.com:5432/viddeshpowardb2
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: viddeshp
+
+networks:
+  ola_network:
+    driver: bridge
